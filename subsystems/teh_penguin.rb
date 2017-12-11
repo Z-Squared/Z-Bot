@@ -55,6 +55,6 @@ module TehPenguin
 
   # I can hardly Mileve it!
   def bot_mileve(event)
-    event.respond "Mileve grabs #{event.message.author.name} from an absurdly far distance bringing them into a strong hug. She proceeds by spinning at traumatizing speeds before releasing the embrace of Mileve resulting in their flying through the sky!"
+    event.respond "Mileve grabs #{event.message.author.name} from an absurdly far distance bringing them into a strong hug. She proceeds by spinning at traumatizing speeds before releasing the embrace of #{event.message.author.name} resulting in their flying through the sky!"
   end
 end
