@@ -10,6 +10,7 @@ require_relative 'lib/text_utils'
 require_relative 'subsystems/admin'
 require_relative 'subsystems/art_relay'
 require_relative 'subsystems/teh_penguin'
+require_relative 'subsystems/watch_page'
 
 # Configuration
 CONFIG = YAML.load_file("config.yaml")
@@ -52,6 +53,7 @@ class Botman
   # Subsystems
   include AdminCommands
   include ArtRelay
+  include WatchPage
   include TehPenguin
 
   def initialize(bot)
