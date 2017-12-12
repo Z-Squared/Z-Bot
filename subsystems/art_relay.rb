@@ -10,7 +10,7 @@ module ArtRelay
 
   # Registers an artist to be picked from during the rotation
   def bot_art_me(event)
-    if artists.add?(event.message.author.name) then
+    if artists.add?(event.message.author.id) then
       event.respond "arrite! added now! i will call u wen its drawing time!!"
     else
       event.respond "you want me to add you again?? okay! okay! i added you again..."
@@ -20,8 +20,8 @@ module ArtRelay
 
   # Removes an artist from the rotation
   def bot_unart_me(event)
-    name = event.message.author.name
-    if artists.delete?(name) then
+    id = event.message.author.id
+    if artists.delete?(id) then
       event.respond "okay! buh bye!"
 
       if @current_artist == name then
@@ -48,8 +48,8 @@ module ArtRelay
     else
       @current_artist = artists.to_a.sample
       event.respond [
-        "arright! @#{@current_artist}! your're up!",
-        "your turn, @#{@current_artist}!"
+        "arright! <@#{@current_artist}>! your're up!",
+        "your turn, <@#{@current_artist}>!"
       ].sample
     end
   end
