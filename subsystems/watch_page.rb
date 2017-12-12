@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 require 'open-uri'
 require 'nokogiri'
+require 'differ'
 
 # The idea behind this module is to watch a section of a page on
 # someone's behalf, and @ them when it changes
@@ -38,6 +39,8 @@ module WatchPage
 
           if checked != current then
             event.respond "hay! haaaay! <@#{@id}>! ur page changed at #{@url}"
+            event.respond "it was diff uhhh liek..."
+            event.respond Differ.diff_by_line(checked, current).to_s[/\{[^}]+\}/][1...-1].gsub(/\s{2,}/, '')
             current = checked
           end
         end
