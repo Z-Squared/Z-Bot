@@ -22,7 +22,7 @@ module WatchPage
       @thread.exit
     end
 
-    # New state now tht we don't care about the last task (if there even was one)
+    # New state now that we don't care about the last task (if there even was one)
     @url = url
     @css = css
     @id = event.message.author.id
