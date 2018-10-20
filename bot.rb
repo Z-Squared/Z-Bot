@@ -1,5 +1,4 @@
 #!/usr/bin/ruby
-# coding: utf-8
 
 # Libraries!
 require 'discordrb'
@@ -13,23 +12,23 @@ require_relative 'subsystems/teh_penguin'
 require_relative 'subsystems/watch_page'
 
 # Configuration
-CONFIG = YAML.load_file("config.yaml")
+CONFIG = YAML.load_file('config.yaml')
 
 # Hardcoded IDs, yay!
 # Some Channels
 CHANNELS = {
-  :test => 388891500521586699
-}
+  test: 388_891_500_521_586_699
+}.freeze
 
 # Some users
 USERS = {
-  :archenoth => 270383242539040768
-}
+  archenoth: 270_383_242_539_040_768
+}.freeze
 
 # Some servers
 SERVERS = {
-  :z_squared => 270384464104914944
-}
+  z_squared: 270_384_464_104_914_944
+}.freeze
 
 bot = Discordrb::Bot.new(
   token: CONFIG[:token],
@@ -46,6 +45,7 @@ bot = Discordrb::Bot.new(
 # If that doesn't exist, we will instead try to call "bot_things" in
 # all of these places with the first argument being the event, and the
 # rest of the arguments being "like" and "this"
+# Na na na na na na na na na na na na na na na
 class Botman
   # Libraries
   include TextUtils
@@ -59,10 +59,20 @@ class Botman
   def initialize(bot)
     @bot = bot
 
-    bot.message(begins_with: "!") do |event|
-      command = event.message.text[1..-1].split(" ")
+    bot.message(begins_with: '!') do |event|
+      command = event.message.text[1..-1].split(' ')
       dispatch(command, event)
     end
+  end
+
+  # Makes the method names the bot attempts to call given a command and type
+  #
+  # It returns an array of 2 names:
+  #   - The name of the command if the whole phrase was a commnd
+  #   - The name of the command if only the first word was the command
+  def dispatch_method_names(command, type = 'bot')
+    [type + '_' + command.join('_').downcase,
+     type + '_' + command.first.downcase]
   end
 
   # Given an array of strings, first attempts to call the result of
@@ -86,14 +96,13 @@ class Botman
   # If no methods match and the caller is not lololo-not-me, this
   # function does nothing more.
   def dispatch(command, event)
-    whole_command = 'bot_' + command.join("_").downcase
-    first_word_command = 'bot_' + command.first.downcase
+    whole_command, first_word_command = dispatch_method_names(command)
 
-    if(respond_to?(whole_command))
+    if respond_to?(whole_command)
       send(whole_command, event)
-    elsif(respond_to?(first_word_command))
+    elsif respond_to?(first_word_command)
       send(first_word_command, event, *command[1..-1])
-    elsif(event.message.author.id == USERS[:archenoth])
+    elsif event.message.author.id == USERS[:archenoth]
       admin_dispatch(command, event)
     end
   end
@@ -105,13 +114,12 @@ class Botman
   #
   # If no methods match, this function does nothing.
   def admin_dispatch(command, event)
-    admin_command = 'admin_' + command.join("_").downcase
-    admin_first_word_command = 'admin_' + command.first.downcase
+    command, first_word_command = dispatch_method_names(command, 'admin')
 
-    if(respond_to?(admin_command))
-      send(admin_command, event)
-    elsif(respond_to?(admin_first_word_command))
-      send(admin_first_word_command, event, *command[1..-1])
+    if respond_to?(command)
+      send(command, event)
+    elsif respond_to?(first_word_command)
+      send(first_word_command, event, *command[1..-1])
     end
   end
 
@@ -120,7 +128,7 @@ class Botman
   #
   # @arg async <Boolean>: true if you want this call to be
   # non-blocking, false for blocking. Defaults to false
-  def run(async=false)
+  def run(async = false)
     @bot.run(async)
   end
 end
@@ -130,15 +138,15 @@ botman = Botman.new(bot)
 #### THE FUN ZONE loLOLOl ####
 
 # Random and arbitrary commands
-bot.message(content: "Nico") do |event|
+bot.message(content: 'Nico') do |event|
   event.respond "Nico niii#{'i' * rand(20)}!"
 end
 
 bot.message(contains: 'I am bot') do |event|
-  event.respond "Hahahaha! Silly dumb robot!"
+  event.respond 'Hahahaha! Silly dumb robot!'
 end
 
-bot.message(content: "oh hi bot") do |event|
+bot.message(content: 'oh hi bot') do |event|
   event.respond "oh hey #{event.message.author.name.downcase} what's up"
 end
 
